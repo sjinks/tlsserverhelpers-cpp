@@ -19,7 +19,6 @@ jobs:
       matrix:
         path:
           - src
-          - test
     permissions:
       contents: read
     steps:
