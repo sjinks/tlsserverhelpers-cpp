@@ -1,0 +1,49 @@
+name: Set up dependencies
+description: Set up dependencies for the project
+runs:
+  using: composite
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ccache
+
+    - name: Set LibreSSL version
+      shell: bash
+      run: echo "LIBRESSL_VERSION=${LIBRESSL_VERSION}" >> "${GITHUB_ENV}"
+      env:
+        # renovate: datasource=github-releases depName=libressl/portable
+        LIBRESSL_VERSION: v3.9.2
+
+    - name: Cache LibreSSL
+      id: cache-libressl
+      uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+      with:
+        path: |
+          /usr/local/include/openssl
+          /usr/local/include/tls.h
+          /usr/local/lib/cmake/LibreSSL
+          /usr/local/lib/libcrypto.a
+          /usr/local/lib/libssl.a
+          /usr/local/lib/libtls.a
+          /usr/local/lib/pkgconfig/libcrypto.pc
+          /usr/local/lib/pkgconfig/libssl.pc
+          /usr/local/lib/pkgconfig/libtls.pc
+          /usr/local/lib/pkgconfig/openssl.pc
+        key: ${{ runner.os }}-libressl-${{ env.LIBRESSL_VERSION }}
+
+    - name: Set up ccache
+      uses: hendrikmuhs/ccache-action@ed74d11c0b343532753ecead8a951bb09bb34bc9 # v1.2.14
+      if: steps.cache-libressl.outputs.cache-hit != 'true'
+
+    - name: Install LibreSSL
+      shell: bash
+      run: |
+        wget -q -O - https://github.com/libressl/portable/releases/download/${LIBRESSL_VERSION}/libressl-${LIBRESSL_VERSION#v}.tar.gz | tar xzf - && \
+        cd libressl-* && \
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DLIBRESSL_APPS=OFF -DLIBRESSL_TESTS=OFF && \
+        cmake --build build -j2 && \
+        sudo cmake --install build
+      if: steps.cache-libressl.outputs.cache-hit != 'true'
+      working-directory: /tmp
