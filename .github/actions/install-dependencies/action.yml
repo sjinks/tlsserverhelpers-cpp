@@ -14,7 +14,7 @@ runs:
       run: echo "LIBRESSL_VERSION=${LIBRESSL_VERSION}" >> "${GITHUB_ENV}"
       env:
         # renovate: datasource=github-releases depName=libressl/portable
-        LIBRESSL_VERSION: v3.9.2
+        LIBRESSL_VERSION: v4.0.0
 
     - name: Cache LibreSSL
       id: cache-libressl
