@@ -33,6 +33,7 @@ jobs:
             api.github.com:443
             azure.archive.ubuntu.com:80
             esm.ubuntu.com:443
+            ftp.openbsd.org:443
             github.com:443
             motd.ubuntu.com:443
             objects.githubusercontent.com:443
