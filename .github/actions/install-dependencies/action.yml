@@ -34,7 +34,7 @@ runs:
         key: ${{ runner.os }}-libressl-${{ env.LIBRESSL_VERSION }}
 
     - name: Set up ccache
-      uses: hendrikmuhs/ccache-action@ed74d11c0b343532753ecead8a951bb09bb34bc9 # v1.2.14
+      uses: hendrikmuhs/ccache-action@53911442209d5c18de8a31615e0923161e435875 # v1.2.16
       if: steps.cache-libressl.outputs.cache-hit != 'true'
 
     - name: Install LibreSSL
