@@ -38,8 +38,10 @@ jobs:
             keyserver.ubuntu.com:443
             keys.openpgp.org:443
             motd.ubuntu.com:443
+            nodejs.org:443
             objects.githubusercontent.com:443
             packages.microsoft.com:443
+            release-assets.githubusercontent.com:443
             scanner.sonarcloud.io:443
             sonarcloud.io:443
 
